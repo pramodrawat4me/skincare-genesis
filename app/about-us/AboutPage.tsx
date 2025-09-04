@@ -19,10 +19,26 @@ import ContactInfoForm from "../components/ContactInfoForm";
 import ImageGallery from "../components/ImageGallery";
 
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-interface PageBlock {
-  acf_fc_layout: string;
-  [key: string]: unknown; // allow any extra fields
-}
+type PageBlock =
+  | {
+      acf_fc_layout: "banner_section";
+      bnr_onoff?: boolean;
+      banner_item?: unknown;
+    }
+  | { acf_fc_layout: "inner_banner"; [key: string]: unknown }
+  | { acf_fc_layout: "content_image"; [key: string]: unknown }
+  | { acf_fc_layout: "services_list"; [key: string]: unknown }
+  | { acf_fc_layout: "video_section"; [key: string]: unknown }
+  | { acf_fc_layout: "services_image_and_content"; [key: string]: unknown }
+  | { acf_fc_layout: "portfolia_list"; [key: string]: unknown }
+  | { acf_fc_layout: "common_content"; [key: string]: unknown }
+  | { acf_fc_layout: "contact_info_and_form"; [key: string]: unknown }
+  | { acf_fc_layout: "map"; [key: string]: unknown }
+  | { acf_fc_layout: "image_gallery"; [key: string]: unknown }
+  | { acf_fc_layout: "customers_say"; [key: string]: unknown }
+  | { acf_fc_layout: "team"; [key: string]: unknown }
+  | { acf_fc_layout: "book_appointment"; [key: string]: unknown }
+  | { acf_fc_layout: "call_to_action"; [key: string]: unknown };
 export default function AboutPage() {
   const [aboutpage, setAboutpage] = useState<PageBlock[]>([]);
   const [loading, setLoading] = useState(true);
