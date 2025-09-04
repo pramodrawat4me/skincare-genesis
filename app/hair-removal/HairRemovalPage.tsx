@@ -1,35 +1,34 @@
 "use client";
-
 import { useState, useEffect } from "react";
-import Header from "./components/Header/page";
-import Footer from "./components/Footer/page";
-import HomeBanner from "./components/HomeBanner";
-import ContentImage from "./components/ContentImage";
-import ServicesList from "./components/ServicesList";
-import Video from "./components/Video";
-import BookAppointment from "./components/BookAppointment";
-import TeamSection from "./components/TeamSection";
-import CallToAction from "./components/CallToAction";
-import InnerBanner from "./components/InnerBanner";
-import CustomersSay from "./components/CustomersSay";
-import ServicesImageContent from "./components/ServicesImageContent";
-import PortfoliaList from "./components/PortfoliaList";
-import CommonContent from "./components/CommonContent";
-import MapSection from "./components/MapSection";
-import ContactInfoForm from "./components/ContactInfoForm";
-import ImageGallery from "./components/ImageGallery";
+import Header from "../components/Header/page";
+import Footer from "../components/Footer/page";
+import HomeBanner from "../components/HomeBanner";
+import ContentImage from "../components/ContentImage";
+import ServicesList from "../components/ServicesList";
+import Video from "../components/Video";
+import BookAppointment from "../components/BookAppointment";
+import TeamSection from "../components/TeamSection";
+import CallToAction from "../components/CallToAction";
+import InnerBanner from "../components/InnerBanner";
+import CustomersSay from "../components/CustomersSay";
+import ServicesImageContent from "../components/ServicesImageContent";
+import PortfoliaList from "../components/PortfoliaList";
+import CommonContent from "../components/CommonContent";
+import MapSection from "../components/MapSection";
+import ContactInfoForm from "../components/ContactInfoForm";
+import ImageGallery from "../components/ImageGallery";
 
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
 
-export default function Home() {
-  const [homepage, setHomepage] = useState<any[]>([]);
+export default function HairRemovalPage() {
+  const [hairremovepage, setHairremovepage] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    fetch(`${baseURL}/wp-json/wp/v2/pages/345`)
+    fetch(`${baseURL}/wp-json/wp/v2/pages/353`)
       .then((res) => res.json())
       .then((data) => {
         const blocks = data?.acf?.page_blocks || [];
-        setHomepage(blocks);
+        setHairremovepage(blocks);
         setLoading(false);
       });
   }, []);
@@ -110,13 +109,14 @@ export default function Home() {
   return (
     <>
       <Header />
+
       <main>
         {loading ? (
           <div className="loader">
             <span>Loading...</span>
           </div>
         ) : (
-          homepage.map((block, index) => renderBlock(block, index))
+          hairremovepage.map((block, index) => renderBlock(block, index))
         )}
       </main>
       <Footer />
