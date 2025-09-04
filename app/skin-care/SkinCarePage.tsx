@@ -63,7 +63,7 @@ export default function SkinCarePage() {
         return (
           <HomeBanner
             key={index}
-            bnr_onoff={block.bnr_onoff as boolean}
+            bnr_onoff={block.bnr_onoff ?? false}
             banner_item={block.banner_item}
           />
         );
