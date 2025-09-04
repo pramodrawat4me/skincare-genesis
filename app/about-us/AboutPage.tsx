@@ -19,21 +19,26 @@ import ContactInfoForm from "../components/ContactInfoForm";
 import ImageGallery from "../components/ImageGallery";
 
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-
+interface PageBlock {
+  acf_fc_layout: string;
+  [key: string]: unknown; // allow any extra fields
+}
 export default function AboutPage() {
-  const [aboutpage, setAboutpage] = useState<any[]>([]);
+  const [aboutpage, setAboutpage] = useState<PageBlock[]>([]);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     fetch(`${baseURL}/wp-json/wp/v2/pages/347`)
       .then((res) => res.json())
       .then((data) => {
-        const blocks = data?.acf?.page_blocks || [];
+        const blocks: PageBlock[] = (data?.acf?.page_blocks ||
+          []) as PageBlock[];
         setAboutpage(blocks);
         setLoading(false);
       });
   }, []);
 
-  const renderBlock = (block: any, index: number) => {
+  const renderBlock = (block: PageBlock, index: number) => {
     switch (block.acf_fc_layout) {
       case "banner_section":
         return (

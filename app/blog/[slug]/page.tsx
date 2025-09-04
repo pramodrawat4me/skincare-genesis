@@ -5,19 +5,37 @@ import Footer from "@/app/components/Footer/page";
 import Header from "@/app/components/Header/page";
 import Link from "next/link";
 import "../../../public/css/blog.css";
+
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
 
+// Define a type for WordPress posts
+interface WPPost {
+  id: number;
+  slug: string;
+  date: string;
+  title: { rendered: string };
+  content: { rendered: string };
+  excerpt?: { rendered: string };
+  _embedded?: {
+    ["wp:featuredmedia"]?: Array<{
+      source_url: string;
+    }>;
+  };
+}
+
 export default function BlogDetail() {
-  const { slug } = useParams();
-  const [post, setPost] = useState<any>(null);
+  const { slug } = useParams<{ slug: string }>();
+  const [post, setPost] = useState<WPPost | null>(null);
   const [loading, setLoading] = useState(true);
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<WPPost[]>([]);
+
   useEffect(() => {
     if (!slug) return;
+
     fetch(`${baseURL}/wp-json/wp/v2/posts?slug=${slug}&_embed`)
       .then((res) => res.json())
-      .then((data) => {
-        setPost(data[0]);
+      .then((data: WPPost[]) => {
+        setPost(data[0] || null);
         setLoading(false);
       });
   }, [slug]);
@@ -25,8 +43,8 @@ export default function BlogDetail() {
   useEffect(() => {
     fetch(`${baseURL}/wp-json/wp/v2/posts?_embed`)
       .then((res) => res.json())
-      .then((data1) => {
-        setPosts(data1);
+      .then((data: WPPost[]) => {
+        setPosts(data);
         setLoading(false);
       });
   }, []);
@@ -48,6 +66,7 @@ export default function BlogDetail() {
           </div>
         </div>
       </section>
+
       <section className="blog-post-signal">
         <div className="container">
           <div className="blog-post-inner">
@@ -71,16 +90,18 @@ export default function BlogDetail() {
                     : ""}
                 </span>
               </div>
+
               <div
                 className="content"
                 dangerouslySetInnerHTML={{ __html: post.content.rendered }}
               />
             </div>
+
             <div className="blog-post-right">
               <h5>Related Post</h5>
               <ul>
-                {posts?.map((item, index) => (
-                  <li className="item" key={index}>
+                {posts.map((item) => (
+                  <li className="item" key={item.id}>
                     <Link href={`/blog/${item.slug}`}>
                       {item.title.rendered}
                     </Link>

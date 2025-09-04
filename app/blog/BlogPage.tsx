@@ -4,16 +4,31 @@ import Link from "next/link";
 import Header from "../components/Header/page";
 import Footer from "../components/Footer/page";
 import "../../public/css/blog.css";
+
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
 
+// Define type for WP Post
+interface WPPost {
+  id: number;
+  slug: string;
+  date: string;
+  title: { rendered: string };
+  excerpt: { rendered: string };
+  _embedded?: {
+    ["wp:featuredmedia"]?: Array<{
+      source_url: string;
+    }>;
+  };
+}
+
 export default function BlogPage() {
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<WPPost[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(`${baseURL}/wp-json/wp/v2/posts?_embed`)
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: WPPost[]) => {
         setPosts(data);
         setLoading(false);
       });
@@ -76,12 +91,14 @@ export default function BlogPage() {
                         </Link>
                       </h6>
 
+                      {/* If you want excerpts: */}
                       {/* <div
                         className="excerpt"
                         dangerouslySetInnerHTML={{
                           __html: post.excerpt.rendered,
                         }}
                       /> */}
+
                       <Link href={`/blog/${post.slug}`} className="blog-btn">
                         Read More
                       </Link>
