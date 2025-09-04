@@ -84,10 +84,10 @@ export default function ContactInfoForm({
                   <div className="input-group">
                     <textarea
                       className="input-field"
-                      type="text"
                       placeholder="Message"
                       required
-                    ></textarea>
+                      rows={5}
+                    />
                   </div>
                   <div className="input-send-btn">
                     <button className="cmn-btn send-btn">Send</button>

@@ -58,14 +58,6 @@ export default function HairRemovalPage() {
 
   const renderBlock = (block: PageBlock, index: number) => {
     switch (block.acf_fc_layout) {
-      case "banner_section":
-        return (
-          <HomeBanner
-            key={index}
-            bnr_onoff={block.bnr_onoff ?? false}
-            banner_item={block.banner_item}
-          />
-        );
       case "inner_banner":
         return <InnerBanner key={index} {...block} />;
       case "content_image":
