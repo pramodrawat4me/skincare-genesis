@@ -19,26 +19,27 @@ import ContactInfoForm from "../components/ContactInfoForm";
 import ImageGallery from "../components/ImageGallery";
 
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-type PageBlock =
-  | {
-      acf_fc_layout: "banner_section";
-      bnr_onoff?: boolean;
-      banner_item?: unknown;
-    }
-  | { acf_fc_layout: "inner_banner"; [key: string]: unknown }
-  | { acf_fc_layout: "content_image"; [key: string]: unknown }
-  | { acf_fc_layout: "services_list"; [key: string]: unknown }
-  | { acf_fc_layout: "video_section"; [key: string]: unknown }
-  | { acf_fc_layout: "services_image_and_content"; [key: string]: unknown }
-  | { acf_fc_layout: "portfolia_list"; [key: string]: unknown }
-  | { acf_fc_layout: "common_content"; [key: string]: unknown }
-  | { acf_fc_layout: "contact_info_and_form"; [key: string]: unknown }
-  | { acf_fc_layout: "map"; [key: string]: unknown }
-  | { acf_fc_layout: "image_gallery"; [key: string]: unknown }
-  | { acf_fc_layout: "customers_say"; [key: string]: unknown }
-  | { acf_fc_layout: "team"; [key: string]: unknown }
-  | { acf_fc_layout: "book_appointment"; [key: string]: unknown }
-  | { acf_fc_layout: "call_to_action"; [key: string]: unknown };
+
+// --- Define types ---
+interface BannerItem {
+  image: string;
+  title: string;
+  description?: string;
+}
+
+interface BannerBlock {
+  acf_fc_layout: "banner_section";
+  bnr_onoff?: boolean;
+  banner_item: BannerItem[];
+}
+
+interface GenericBlock {
+  acf_fc_layout: string;
+  [key: string]: unknown;
+}
+
+type PageBlock = BannerBlock | GenericBlock;
+
 export default function AboutPage() {
   const [aboutpage, setAboutpage] = useState<PageBlock[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,14 +57,16 @@ export default function AboutPage() {
 
   const renderBlock = (block: PageBlock, index: number) => {
     switch (block.acf_fc_layout) {
-      case "banner_section":
+      case "banner_section": {
+        const bannerBlock = block as BannerBlock;
         return (
           <HomeBanner
             key={index}
-            bnr_onoff={block.bnr_onoff ?? false}
-            banner_item={block.banner_item}
+            bnr_onoff={bannerBlock.bnr_onoff ?? false}
+            banner_item={bannerBlock.banner_item}
           />
         );
+      }
 
       case "inner_banner":
         return <InnerBanner key={index} {...block} />;
@@ -85,33 +88,18 @@ export default function AboutPage() {
 
       case "common_content":
         return <CommonContent key={index} {...block} />;
+
       case "contact_info_and_form":
         return <ContactInfoForm key={index} {...block} />;
 
       case "map":
         return <MapSection key={index} {...block} />;
 
-      // case "content_image_slider":
-      //   return (
-      //     <section key={index}>
-      //       <h2>Content Image Slider</h2>
-      //       {/* render slider */}
-      //     </section>
-      //   );
-
       case "image_gallery":
         return <ImageGallery key={index} {...block} />;
 
       case "customers_say":
         return <CustomersSay key={index} {...block} />;
-
-      // case "image_gallery_slider":
-      //   return (
-      //     <section key={index}>
-      //       <h2>Image Gallery Slider</h2>
-      //       {/* render gallery slider */}
-      //     </section>
-      //   );
 
       case "team":
         return <TeamSection key={index} {...block} />;
@@ -130,7 +118,6 @@ export default function AboutPage() {
   return (
     <>
       <Header />
-
       <main>
         {loading ? (
           <div className="loader">
