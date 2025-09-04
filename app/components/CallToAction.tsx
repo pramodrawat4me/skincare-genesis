@@ -1,9 +1,15 @@
 import React from "react";
+
 interface CallToActionProps {
   ca_onoff?: boolean;
   ca_title?: string;
-  ca_button?: string;
+  ca_button?: {
+    url: string;
+    title: string;
+    target?: string;
+  };
 }
+
 export default function CallToAction({
   ca_onoff,
   ca_title,
@@ -19,8 +25,12 @@ export default function CallToAction({
                 {ca_title && <h3>{ca_title}</h3>}
               </div>
               {ca_button && (
-                <a href={ca_button?.url} className="cmn-btn">
-                  {ca_button?.title}
+                <a
+                  href={ca_button.url}
+                  className="cmn-btn"
+                  target={ca_button.target || "_self"}
+                >
+                  {ca_button.title}
                 </a>
               )}
             </div>

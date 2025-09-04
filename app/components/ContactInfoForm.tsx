@@ -56,8 +56,6 @@ export default function ContactInfoForm({
                       className="input-field"
                       type="text"
                       placeholder="Name*"
-                      onBlur="this.placeholder = ''"
-                      onblur="this.placeholder = 'Name*'"
                       required
                     />
                   </div>
@@ -66,8 +64,6 @@ export default function ContactInfoForm({
                       className="input-field"
                       type="email"
                       placeholder="Email*"
-                      onBlur="this.placeholder = ''"
-                      onblur="this.placeholder = ' Email*'"
                       required
                     />
                   </div>
@@ -76,8 +72,6 @@ export default function ContactInfoForm({
                       className="input-field"
                       type="tel"
                       placeholder="Mobile Number*"
-                      onBlur="this.placeholder = ''"
-                      onblur="this.placeholder = ' Mobile Number*'"
                       required
                     />
                   </div>
@@ -87,8 +81,6 @@ export default function ContactInfoForm({
                       className="input-field"
                       type="text"
                       placeholder="Message"
-                      onBlur="this.placeholder = ''"
-                      onblur="this.placeholder = 'Message'"
                       required
                     ></textarea>
                   </div>
