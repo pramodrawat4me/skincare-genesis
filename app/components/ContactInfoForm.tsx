@@ -40,6 +40,11 @@ export default function ContactInfoForm({
                       <span className={`${item.icon_class}-icon`}></span>
                       <div className="contact-item-inner">
                         <div className="contact-text">{item.title}</div>
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: item.content || "",
+                          }}
+                        />
                       </div>
                     </div>
                   ))}

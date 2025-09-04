@@ -18,89 +18,66 @@ import MapSection from "../components/MapSection";
 import ContactInfoForm from "../components/ContactInfoForm";
 import ImageGallery from "../components/ImageGallery";
 
+export interface PageBlock {
+  acf_fc_layout: string;
+  [key: string]: unknown;
+}
+
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export default function MakeUpPage() {
-  const [makeuppage, setMakeuppage] = useState<any[]>([]);
+  const [makeuppage, setMakeuppage] = useState<PageBlock[]>([]);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     fetch(`${baseURL}/wp-json/wp/v2/pages/355`)
       .then((res) => res.json())
       .then((data) => {
-        const blocks = data?.acf?.page_blocks || [];
+        const blocks: PageBlock[] =
+          (data?.acf?.page_blocks as PageBlock[]) || [];
         setMakeuppage(blocks);
         setLoading(false);
       });
   }, []);
 
-  const renderBlock = (block: any, index: number) => {
+  const renderBlock = (block: PageBlock, index: number) => {
     switch (block.acf_fc_layout) {
       case "banner_section":
         return (
           <HomeBanner
             key={index}
-            bnr_onoff={block.bnr_onoff}
+            bnr_onoff={block.bnr_onoff as boolean}
             banner_item={block.banner_item}
           />
         );
-
       case "inner_banner":
         return <InnerBanner key={index} {...block} />;
-
       case "content_image":
         return <ContentImage key={index} {...block} />;
-
       case "services_list":
         return <ServicesList key={index} {...block} />;
-
       case "video_section":
         return <Video key={index} {...block} />;
-
       case "services_image_and_content":
         return <ServicesImageContent key={index} {...block} />;
-
       case "portfolia_list":
         return <PortfoliaList key={index} {...block} />;
-
       case "common_content":
         return <CommonContent key={index} {...block} />;
       case "contact_info_and_form":
         return <ContactInfoForm key={index} {...block} />;
-
       case "map":
         return <MapSection key={index} {...block} />;
-
-      // case "content_image_slider":
-      //   return (
-      //     <section key={index}>
-      //       <h2>Content Image Slider</h2>
-      //       {/* render slider */}
-      //     </section>
-      //   );
-
       case "image_gallery":
         return <ImageGallery key={index} {...block} />;
-
       case "customers_say":
         return <CustomersSay key={index} {...block} />;
-
-      // case "image_gallery_slider":
-      //   return (
-      //     <section key={index}>
-      //       <h2>Image Gallery Slider</h2>
-      //       {/* render gallery slider */}
-      //     </section>
-      //   );
-
       case "team":
         return <TeamSection key={index} {...block} />;
-
       case "book_appointment":
         return <BookAppointment key={index} {...block} />;
-
       case "call_to_action":
         return <CallToAction key={index} {...block} />;
-
       default:
         return null;
     }
@@ -109,7 +86,6 @@ export default function MakeUpPage() {
   return (
     <>
       <Header />
-
       <main>
         {loading ? (
           <div className="loader">
