@@ -59,6 +59,16 @@ export default function Home() {
 
   const renderBlock = (block: PageBlock, index: number) => {
     switch (block.acf_fc_layout) {
+      case "banner_section": {
+        const bannerBlock = block as BannerBlock;
+        return (
+          <HomeBanner
+            key={index}
+            bnr_onoff={bannerBlock.bnr_onoff ?? false}
+            banner_item={bannerBlock.banner_item}
+          />
+        );
+      }
       case "inner_banner":
         return <InnerBanner key={index} {...block} />;
 

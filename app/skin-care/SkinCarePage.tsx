@@ -18,6 +18,8 @@ import CommonContent from "../components/CommonContent";
 import MapSection from "../components/MapSection";
 import ContactInfoForm from "../components/ContactInfoForm";
 import ImageGallery from "../components/ImageGallery";
+import AboutImageContent from "../components/AboutImageContent";
+import { log } from "console";
 
 interface BannerItem {
   image: string;
@@ -50,6 +52,18 @@ export default function SkinCarePage() {
 
   const renderBlock = (block: PageBlock, index: number) => {
     switch (block.acf_fc_layout) {
+      case "banner_section": {
+        const bannerBlock = block as BannerBlock;
+        return (
+          <HomeBanner
+            key={index}
+            bnr_onoff={bannerBlock.bnr_onoff ?? false}
+            banner_item={bannerBlock.banner_item}
+          />
+        );
+      }
+      case "about_image_content":
+        return <AboutImageContent key={index} {...block} />;
       case "inner_banner":
         return <InnerBanner key={index} {...block} />;
 
